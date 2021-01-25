@@ -1,7 +1,14 @@
 import React from "react";
 // import PropTypes from "prop-types";
+import { WidthLimiterContainer } from "../components/layout/styles";
+import BurgerBuilder from "../components/BurgerBuilder/Index";
+
 const Index = () => {
-  return <div>React App</div>;
+  return (
+    <WidthLimiterContainer>
+      <BurgerBuilder />
+    </WidthLimiterContainer>
+  );
 };
 
 // Index.propTypes = {};

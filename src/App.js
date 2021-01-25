@@ -4,6 +4,7 @@ import { GlobalStyle } from "./utils/styles";
 import { ThemeProvider } from "styled-components";
 import LightTheme from "./theme/light";
 import DarkTheme from "./theme/dark";
+import Layout from "./components/layout/index";
 
 const App = () => {
   const [theme, setTheme] = useState(LightTheme);
@@ -19,7 +20,9 @@ const App = () => {
       }}
     >
       <GlobalStyle />
-      <Index />
+      <Layout>
+        <Index />
+      </Layout>
     </ThemeProvider>
   );
 };
