@@ -19,7 +19,7 @@ const OrderSummary = (props) => {
       <p>A delicious burger witht the following ingredients</p>
       <ul>{ingredientSummary}</ul>
       <p>
-        <storng>Total Price: {props.price.toFixed(2)} $</storng>
+        <strong>Total Price: {props.price.toFixed(2)} $</strong>
       </p>
       <p>Continue to checkout ? </p>
       <ButtonStyled clicked={props.purchasedCancel}>CANCEL</ButtonStyled>

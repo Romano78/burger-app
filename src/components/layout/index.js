@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { BodyContainer } from "./styles";
 import Toolbar from "../Navigation/Toolbar/Toolbar";
 import SideBarDrawer from "../Navigation/SideDrawer/SideDrawer";
+// const SideBarDrawer = lazy(() => import("../Navigation/SideDrawer/SideDrawer"));
+// const Toolbar = lazy(() => import("../Navigation/Toolbar/Toolbar"));
 
 export const Wrapper = styled.div``;
 

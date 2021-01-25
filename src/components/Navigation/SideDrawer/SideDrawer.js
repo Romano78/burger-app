@@ -1,8 +1,10 @@
-import React from "react";
-import Logo from "../../Logo/Logo";
+import React, { lazy, Suspense } from "react";
+// import Logo from "../../Logo/Logo";
+
 import NavigationItems from "../NavigationItems/NavigationItems";
 import { SideDrawerContainer, MobileLogoContainer } from "./Styles";
 import Backdrop from "../../UI/Backdrop/Backdrop";
+const Logo = lazy(() => import("../../Logo/Logo"));
 
 const SideDrawer = (props) => {
   return (
@@ -10,7 +12,9 @@ const SideDrawer = (props) => {
       <Backdrop show={props.open} clicked={props.closed} />
       <SideDrawerContainer open={props.open}>
         <MobileLogoContainer>
-          <Logo />
+          <Suspense fallback={<div>loading..</div>}>
+            <Logo />
+          </Suspense>
         </MobileLogoContainer>
         <nav>
           <NavigationItems />

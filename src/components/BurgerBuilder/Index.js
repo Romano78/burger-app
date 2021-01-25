@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, lazy, Suspense } from "react";
 import Burger from "../Burger/Burger";
-import BuildControl from "../../components/Burger/BuildControl";
+// import BuildControl from "../../components/Burger/BuildControl";
 import Modal from "../UI/Modal/Modal";
 import OrderSummary from "../Burger/OrderSummary";
+const BuildControl = lazy(() => import("../../components/Burger/BuildControl"));
 
 const INGREDIENT_PRICES = {
   salad: 0.4,
@@ -100,33 +101,33 @@ class BurgerBuilder extends Component {
     };
 
     for (let key in disabledInfo) {
-      console.log(disabledInfo[key]);
       disabledInfo[key] = disabledInfo[key] <= 0;
     }
-    console.log(this.state.purchasing);
 
     return (
       <>
-        <Modal
-          show={this.state.purchasing}
-          modalClosed={this.purchaseCancelOrder}
-        >
-          <OrderSummary
-            ingredientSummary={this.state.ingredients}
-            purchasedCancel={this.purchaseCancelOrder}
-            purchasedContinued={this.purchaseContinueHandler}
-            price={this.state.totalPrice}
+        <Suspense fallback={<div>Loading...</div>}>
+          <Modal
+            show={this.state.purchasing}
+            modalClosed={this.purchaseCancelOrder}
+          >
+            <OrderSummary
+              ingredientSummary={this.state.ingredients}
+              purchasedCancel={this.purchaseCancelOrder}
+              purchasedContinued={this.purchaseContinueHandler}
+              price={this.state.totalPrice}
+            />
+          </Modal>
+          <Burger ingredients={this.state.ingredients} />
+          <BuildControl
+            ingredientAdded={this.addIngredientHandler}
+            ingredientRemoved={this.removeIngredientHandler}
+            disabledInfoProps={disabledInfo}
+            burgerPrice={this.state.totalPrice}
+            purchasable={this.state.purchasable}
+            ordered={this.purchaseHandler}
           />
-        </Modal>
-        <Burger ingredients={this.state.ingredients} />
-        <BuildControl
-          ingredientAdded={this.addIngredientHandler}
-          ingredientRemoved={this.removeIngredientHandler}
-          disabledInfoProps={disabledInfo}
-          burgerPrice={this.state.totalPrice}
-          purchasable={this.state.purchasable}
-          ordered={this.purchaseHandler}
-        />
+        </Suspense>
       </>
     );
   }
