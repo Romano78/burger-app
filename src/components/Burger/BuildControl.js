@@ -10,10 +10,13 @@ const controls = [
 ];
 
 const BuildControl = (props) => {
+  const { burgerPrice } = props;
+
   return (
     <BuildControlContainer2>
       <p>
-        Current Price: <strong>{props.burgerPrice.toFixed(2)}$</strong>
+        Current Price:{" "}
+        <strong style={{ color: "white" }}>{burgerPrice.toFixed(2)}$</strong>
       </p>
       {controls.map((ctrl) => {
         return (

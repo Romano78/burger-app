@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { BurgerContainer, Test } from "./Styles";
 // import BurgerIngredient from "./BurgerIngredient";
+import { withRouter } from "react-router-dom";
 const BurgerIngredient = lazy(() => import("./BurgerIngredient"));
 
 const Burger = (props) => {
@@ -33,4 +34,4 @@ const Burger = (props) => {
   );
 };
 
-export default Burger;
+export default withRouter(Burger);

@@ -5,10 +5,10 @@ const NavigationItems = () => {
   return (
     <NavigationListUl>
       <NavigationListLi>
-        <NavigationLink href="/" active>
+        <NavigationLink to="/" exact>
           Burger Builder
         </NavigationLink>
-        <NavigationLink href="/">Checkout</NavigationLink>
+        <NavigationLink to="/orders">Orders</NavigationLink>
       </NavigationListLi>
     </NavigationListUl>
   );
