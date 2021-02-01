@@ -22,6 +22,11 @@ const ButtonStyled = styled.button`
   &:focus {
     outline: none;
   }
+
+  &:disabled {
+    color: #ccc;
+    cursor: not-allowed;
+  }
 `;
 
 const Button = (props) => {

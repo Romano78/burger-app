@@ -14,9 +14,4 @@ export const ContactContainer = styled.div`
   }
 `;
 
-export const Input = styled.input`
-  display: block;
-  margin: auto;
-`;
-
 export const Form = styled.form``;
