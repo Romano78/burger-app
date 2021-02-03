@@ -3,14 +3,8 @@ import ButtonStyled from "../UI/Button/Button";
 import { Link } from "react-router-dom";
 
 const OrderSummary = (props) => {
-  let ingredientSummaryProps = [];
   const ingredientSummary = Object.keys(props.ingredientSummary).map(
     (igKey) => {
-      ingredientSummaryProps.push(
-        `${encodeURIComponent(igKey)}=${encodeURIComponent(
-          props.ingredientSummary[igKey]
-        )}`
-      );
       return (
         <li key={igKey}>
           <span styles={{ textTransform: "capitalize" }}>{igKey}</span>:{" "}
@@ -19,9 +13,6 @@ const OrderSummary = (props) => {
       );
     }
   );
-
-  const queryParams = ingredientSummaryProps.join("&");
-  console.log(queryParams);
 
   return (
     <>
@@ -36,7 +27,6 @@ const OrderSummary = (props) => {
       <Link
         to={{
           pathname: "/checkout",
-          search: `?${queryParams}`,
         }}
       >
         <ButtonStyled success clicked={props.purchasedContinued}>

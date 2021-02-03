@@ -16,6 +16,7 @@ const Order = (props) => {
       {ingredients.map((i) => {
         return (
           <span
+            key={i.name}
             style={{
               textTransform: "capitalize",
               display: "inline-block",
@@ -30,7 +31,7 @@ const Order = (props) => {
       })}
 
       <p>
-        Price: <strong>USD 5.45 (to be fixed)</strong>
+        Price: <strong>USD {props.price.toFixed(2)} $</strong>
       </p>
     </OrderContainer>
   );

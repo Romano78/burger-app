@@ -5,6 +5,7 @@ import axios from "../../../axios-orders";
 import { withRouter } from "react-router-dom";
 import Input from "../../UI/Input/Input";
 import OrderFormHelper from "../../Helper/OrderFormHelper";
+import { connect } from "react-redux";
 
 class ContactData extends Component {
   state = {
@@ -107,8 +108,8 @@ class ContactData extends Component {
 
     this.setState({ sending: true });
     const order = {
-      ingredients: this.props.ingredients,
-      price: this.state.totalPrice,
+      ingredients: this.props.ingredientState,
+      price: this.props.price,
       orderData: formData,
     };
     axios
@@ -118,6 +119,7 @@ class ContactData extends Component {
         this.props.history.push("/");
       })
       .catch((err) => {
+        console.log(err);
         this.setState({ sending: false });
       });
   };
@@ -155,8 +157,6 @@ class ContactData extends Component {
     );
 
     updatedFormElement.touched = true;
-
-    console.log(updatedFormElement);
 
     updatedOrderForm[inputIdentifier] = updatedFormElement;
 
@@ -209,4 +209,11 @@ class ContactData extends Component {
   }
 }
 
-export default withRouter(ContactData);
+const mapStateToProps = (state) => {
+  return {
+    ingredientState: state.ingredients,
+    price: state.totalPrice,
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(ContactData));
