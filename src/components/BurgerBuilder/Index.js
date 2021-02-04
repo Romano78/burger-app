@@ -8,7 +8,7 @@ import Spinner from "../UI/Spinner/Spinner";
 import withErrorHandler from "../withErrorHandler/withErrorHandler";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import * as actionNames from "../../store/actionNames";
+import * as actionTypes from "../../store/actions/burgerBuilderAction";
 
 const BuildControl = lazy(() => import("../../components/Burger/BuildControl"));
 
@@ -19,23 +19,12 @@ class BurgerBuilder extends Component {
   //   this.state = {};
   // } // old
   state = {
-    totalPrice: 5,
     purchasing: false,
     sending: false,
-    error: false,
   }; // More Modern way even if old
 
   componentDidMount() {
-    // axios
-    //   .get("/ingredients.json")
-    //   .then((response) => {
-    //     this.setState({
-    //       ingredients: response?.data,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     this.setState({ error: true });
-    //   });
+    this.props.fetchIngredientHandler();
   }
 
   updatePurchaseState = (ingredients) => {
@@ -72,7 +61,7 @@ class BurgerBuilder extends Component {
             show={this.state.purchasing}
             modalClosed={this.purchaseCancelOrder}
           >
-            {!this.state.sending && this.props.ingredientState ? (
+            {this.props.ingredientState ? (
               <OrderSummary
                 ingredientSummary={this.props.ingredientState}
                 purchasedCancel={this.purchaseCancelOrder}
@@ -83,7 +72,7 @@ class BurgerBuilder extends Component {
               <Spinner />
             )}
           </Modal>
-          {this.props.ingredientState && !this.state.error ? (
+          {this.props.ingredientState && !this.props.error ? (
             <>
               <Burger ingredients={this.props.ingredientState} />
               <BuildControl
@@ -111,17 +100,19 @@ class BurgerBuilder extends Component {
 
 const mapPropsToState = (state) => {
   return {
-    ingredientState: state.ingredients,
-    price: state.totalPrice,
+    ingredientState: state.ings.ingredients,
+    price: state.ings.totalPrice,
+    error: state.ings.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addIngredientHandler: (name) =>
-      dispatch({ type: actionNames.ADD_INGREDIENTS, ingredientName: name }),
+    addIngredientHandler: (name) => dispatch(actionTypes.addIngredient(name)),
     removeIngredientHandler: (name) =>
-      dispatch({ type: actionNames.REMOVE_INGREDIENTS, ingredientName: name }),
+      dispatch(actionTypes.removeIngredient(name)),
+    fetchIngredientHandler: (ingredients) =>
+      dispatch(actionTypes.fetchIngredient(ingredients)),
   };
 };
 
