@@ -6,6 +6,8 @@ import { withRouter } from "react-router-dom";
 import Input from "../../UI/Input/Input";
 import OrderFormHelper from "../../Helper/OrderFormHelper";
 import { connect } from "react-redux";
+import withErrorHandler from "../../withErrorHandler/withErrorHandler";
+import * as orderAction from "../../../store/actions/orderAction";
 
 class ContactData extends Component {
   state = {
@@ -90,7 +92,6 @@ class ContactData extends Component {
         value: "takeout",
       },
     },
-    sending: false,
     formIsNotValid: true,
   };
 
@@ -106,22 +107,17 @@ class ContactData extends Component {
       ].value;
     }
 
-    this.setState({ sending: true });
     const order = {
       ingredients: this.props.ingredientState,
       price: this.props.price,
       orderData: formData,
     };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        this.setState({ sending: false, purchasing: false });
-        this.props.history.push("/");
-      })
-      .catch((err) => {
-        console.log(err);
-        this.setState({ sending: false });
-      });
+
+    //THIS IS WHERE YOU CALL ACXIONS
+
+    this.props.onOrderBurgerHandler(order);
+
+    this.props.history.push("/");
   };
 
   checkValidity = (value, rules) => {
@@ -211,9 +207,20 @@ class ContactData extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    ingredientState: state.ingredients,
-    price: state.totalPrice,
+    ingredientState: state.ings.ingredients,
+    price: state.ings.totalPrice,
+    loading: state.orderState.loading,
   };
 };
 
-export default connect(mapStateToProps)(withRouter(ContactData));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onOrderBurgerHandler: (orderData) =>
+      dispatch(orderAction.purchasedBurger(orderData)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(withErrorHandler(ContactData, axios)));

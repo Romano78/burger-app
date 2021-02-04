@@ -72,7 +72,7 @@ class BurgerBuilder extends Component {
               <Spinner />
             )}
           </Modal>
-          {this.props.ingredientState && !this.props.error ? (
+          {this.props.ingredientState ? (
             <>
               <Burger ingredients={this.props.ingredientState} />
               <BuildControl

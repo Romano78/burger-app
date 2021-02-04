@@ -9,18 +9,6 @@ import burgerBuilder from "./store/reducers/burgerBuilder";
 import order from "./store/reducers/order";
 import thunk from "redux-thunk";
 
-const logger = (store) => {
-  return (next) => {
-    //midleware
-    return (action) => {
-      console.log("[MiddleWare] Dispaching", action);
-      const result = next(action);
-      console.log("[Middleware] next state", store.getState());
-      return result;
-    };
-  };
-};
-
 const rootReucer = combineReducers({
   ings: burgerBuilder,
   orderState: order,
@@ -28,10 +16,7 @@ const rootReucer = combineReducers({
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(
-  rootReucer,
-  composeEnhancers(applyMiddleware(logger, thunk))
-);
+const store = createStore(rootReucer, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <React.StrictMode>
