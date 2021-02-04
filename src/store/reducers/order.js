@@ -1,4 +1,5 @@
 import * as actionName from "../actions/actionNames";
+import { objectAssign } from "../../utilities/objectAssign";
 
 const initialState = {
   order: [],
@@ -7,38 +8,32 @@ const initialState = {
   loading: false,
 };
 
+const purchaseOrder = (state, action) => {
+  const newOrder = {
+    ...action.orderData,
+    id: action.orderId,
+  };
+  return objectAssign(state, {
+    order: state.order.concat({
+      newOrder,
+    }),
+    loading: false,
+  });
+};
+
 const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionName.PURCHASE_BURGER_SUCCESS:
-      const newOrder = {
-        ...action.orderData,
-        id: action.orderId,
-      };
-      return {
-        ...state,
-        order: state.order.concat({
-          newOrder,
-        }),
-        loading: false,
-      };
+      return purchaseOrder(state, action);
 
     case actionName.PURCHASE_BURGER_FAILED:
-      return {
-        ...state,
-        loading: false,
-      };
+      return objectAssign(state, { loading: false });
 
     case actionName.PURCHASED_BURGER_START:
-      return {
-        ...state,
-        loading: true,
-      };
+      return objectAssign(state, { loading: true });
 
     case actionName.SET_ORDER:
-      return {
-        ...state,
-        order: action.order,
-      };
+      return objectAssign(state, { order: action.order });
 
     default:
       return state;

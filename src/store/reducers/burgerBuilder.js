@@ -1,4 +1,5 @@
 import * as actionNames from "../actions/actionNames";
+import { objectAssign } from "../../utilities/objectAssign";
 
 const initialState = {
   ingredients: null,
@@ -13,46 +14,51 @@ const INGREDIENT_PRICES = {
   meat: 0.5,
 }; // Gloabl variable in uppercase
 
+const addIngredients = (state, action) => {
+  return objectAssign(state, {
+    ingredients: {
+      ...state.ingredients,
+      // overwrite a proprety in a given javascpit object
+      [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
+    },
+    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+  });
+};
+
+const removeIngredients = (state, action) => {
+  return objectAssign(state, {
+    ingredients: {
+      ...state.ingredients,
+      // overwrite a proprety in a given javascpit object
+      [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
+    },
+    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
+  });
+};
+
+const setIngredients = (state, action) => {
+  return objectAssign(state, {
+    ingredients: {
+      salad: action.ingredients.salad,
+      bacon: action.ingredients.bacon,
+      cheese: action.ingredients.cheese,
+      meat: action.ingredients.meat,
+    },
+    totalPrice: 5,
+    error: false,
+  });
+};
+
 const burgerBuilder = (state = initialState, action) => {
   switch (action.type) {
     case actionNames.ADD_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          // overwrite a proprety in a given javascpit object
-          [action.ingredientName]: state.ingredients[action.ingredientName] + 1,
-        },
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
-      };
-
+      return addIngredients(state, action);
     case actionNames.REMOVE_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          // overwrite a proprety in a given javascpit object
-          [action.ingredientName]: state.ingredients[action.ingredientName] - 1,
-        },
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName],
-      };
+      return removeIngredients(state, action);
     case actionNames.SET_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
-          salad: action.ingredients.salad,
-          bacon: action.ingredients.bacon,
-          cheese: action.ingredients.cheese,
-          meat: action.ingredients.meat,
-        },
-        totalPrice: 5,
-        error: false,
-      };
+      return setIngredients(state, action);
     case actionNames.SET_ERROR:
-      return {
-        ...state,
-        error: true,
-      };
+      return objectAssign(state, { error: true });
     default:
       return state;
   }
