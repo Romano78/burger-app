@@ -111,11 +111,12 @@ class ContactData extends Component {
       ingredients: this.props.ingredientState,
       price: this.props.price,
       orderData: formData,
+      userId: this.props.userId,
     };
 
     //THIS IS WHERE YOU CALL ACXIONS
 
-    this.props.onOrderBurgerHandler(order);
+    this.props.onOrderBurgerHandler(order, this.props.token);
 
     this.props.history.push("/");
   };
@@ -210,13 +211,15 @@ const mapStateToProps = (state) => {
     ingredientState: state.ings.ingredients,
     price: state.ings.totalPrice,
     loading: state.orderState.loading,
+    token: state.authState.token,
+    userId: state.authState.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurgerHandler: (orderData) =>
-      dispatch(orderAction.purchasedBurger(orderData)),
+    onOrderBurgerHandler: (orderData, token) =>
+      dispatch(orderAction.purchasedBurger(orderData, token)),
   };
 };
 

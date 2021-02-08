@@ -6,6 +6,7 @@ import Toolbar from "../Navigation/Toolbar/Toolbar";
 import SideBarDrawer from "../Navigation/SideDrawer/SideDrawer";
 // const SideBarDrawer = lazy(() => import("../Navigation/SideDrawer/SideDrawer"));
 // const Toolbar = lazy(() => import("../Navigation/Toolbar/Toolbar"));
+import { connect } from "react-redux";
 
 export const Wrapper = styled.div``;
 
@@ -23,10 +24,14 @@ class Layout extends Component {
   render() {
     return (
       <Wrapper>
-        <Toolbar open={this.sideDrawerCloseHandler} />
+        <Toolbar
+          open={this.sideDrawerCloseHandler}
+          isAuth={this.props.isAuthenticated}
+        />
         <SideBarDrawer
           closed={this.sideDrawerCloseHandler}
           open={this.state.showSideDrawer}
+          isAuth={this.props.isAuthenticated}
         />
         <BodyContainer>{this.props.children}</BodyContainer>
       </Wrapper>
@@ -38,4 +43,9 @@ class Layout extends Component {
 //   children: PropTypes.object,
 // };
 
-export default Layout;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.authState.token !== null,
+  };
+};
+export default connect(mapStateToProps)(Layout);

@@ -1,21 +1,56 @@
-import React, { useState } from "react";
-import Index from "./pages/Index";
+import React, { useState, useEffect } from "react";
+import IndexPage from "./pages/Index";
 import { GlobalStyle } from "./utils/styles";
 import { ThemeProvider } from "styled-components";
 import LightTheme from "./theme/light";
 import DarkTheme from "./theme/dark";
 import Layout from "./components/layout/index";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import asynComponent from "./components/Hoc/asyncComponent";
 import IngredientProvider from "./provider/IngredientProvider";
 import Orders from "./components/Orders/Orders";
+import Auth from "./pages/Auth";
+import Logout from "./components/Logout/logout";
+import { connect } from "react-redux";
+import * as action from "./store/actions/authAction";
 
 //same as Lazy Loading.
 const AsyncNewPost = asynComponent(() => {
   return import("./pages/Checkout");
 });
 
-const App = () => {
+const App = (props) => {
+  useEffect(() => {
+    props.onTryAutoSignup();
+  });
+
+  let routes = (
+    <Switch>
+      <Route path="/auth" component={Auth} />
+      <Route path="/" exact>
+        {IndexPage}
+      </Route>
+      <Redirect to="/" />
+    </Switch>
+  );
+
+  if (props.isAuthenticated) {
+    routes = (
+      <Switch>
+        <Route path="/auth" component={Auth} />
+        <Route path="/" exact>
+          {IndexPage}
+        </Route>
+        <Route path="/checkout" component={AsyncNewPost} />
+        {props.isAuthenticated ? (
+          <Route path="/orders" component={Orders} />
+        ) : null}
+        <Route path="/logout" component={Logout} />
+        <Redirect to="/" />
+      </Switch>
+    );
+  }
+
   const [theme, setTheme] = useState(LightTheme);
   return (
     <ThemeProvider
@@ -30,20 +65,22 @@ const App = () => {
     >
       <GlobalStyle />
       <IngredientProvider>
-        <Layout>
-          <Switch>
-            <Route path="/" exact>
-              <Index />
-            </Route>
-            {/* in order to get the props history etc you need to return route like this */}
-            <Route path="/checkout" component={AsyncNewPost} />
-            <Route path="/orders" component={Orders} />
-            <Route render={() => <h1>Not Found</h1>} />
-          </Switch>
-        </Layout>
+        <Layout>{routes}</Layout>
       </IngredientProvider>
     </ThemeProvider>
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.authState.token != null,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTryAutoSignup: () => dispatch(action.authCheckState()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -7,11 +7,13 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import burgerBuilder from "./store/reducers/burgerBuilder";
 import order from "./store/reducers/order";
+import authReducer from "./store/reducers/auth";
 import thunk from "redux-thunk";
 
 const rootReucer = combineReducers({
   ings: burgerBuilder,
   orderState: order,
+  authState: authReducer,
 });
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

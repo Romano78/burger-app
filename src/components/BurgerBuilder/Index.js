@@ -9,6 +9,7 @@ import withErrorHandler from "../withErrorHandler/withErrorHandler";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/burgerBuilderAction";
+import * as actionAuth from "../../store/actions/authAction";
 
 const BuildControl = lazy(() => import("../../components/Burger/BuildControl"));
 
@@ -39,7 +40,12 @@ class BurgerBuilder extends Component {
   };
 
   purchaseHandler = () => {
-    this.setState({ purchasing: true });
+    if (this.props.isAuthenticated) {
+      this.setState({ purchasing: true });
+    } else {
+      this.props.onSetAuthRedirectPath("/checkout");
+      this.props.history.push("/auth");
+    }
   };
 
   purchaseCancelOrder = () => {
@@ -84,6 +90,7 @@ class BurgerBuilder extends Component {
                   this.props.ingredientState
                 )}
                 ordered={this.purchaseHandler}
+                isAuth={this.props.isAuthenticated}
               />
             </>
           ) : (
@@ -103,6 +110,7 @@ const mapPropsToState = (state) => {
     ingredientState: state.ings.ingredients,
     price: state.ings.totalPrice,
     error: state.ings.error,
+    isAuthenticated: state.authState.token !== null,
   };
 };
 
@@ -113,6 +121,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actionTypes.removeIngredient(name)),
     fetchIngredientHandler: (ingredients) =>
       dispatch(actionTypes.fetchIngredient(ingredients)),
+    onSetAuthRedirectPath: (path) =>
+      dispatch(actionAuth.setAuthRedirectPath(path)),
   };
 };
 

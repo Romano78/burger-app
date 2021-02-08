@@ -54,7 +54,6 @@ class IngredientProvider extends Component {
   };
 
   componentWillMount() {
-    console.log("render");
     axios
       .get("/ingredients.json")
       .then((response) => {

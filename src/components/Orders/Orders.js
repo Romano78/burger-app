@@ -8,13 +8,12 @@ import * as action from "../../store/actions/orderAction";
 
 class Orders extends Component {
   componentDidMount() {
-    this.props.orderHandler();
+    this.props.orderHandler(this.props.token, this.props.userId);
   }
 
   render() {
     return (
       <OrdersContainer>
-        {console.log(this.props.orderState)}
         {this.props.orderState.map((order) => {
           return (
             <Order
@@ -33,12 +32,15 @@ const mapStateToProps = (state) => {
   return {
     orderState: state.orderState.order,
     loadingState: state.orderState.loading,
+    token: state.authState.token,
+    userId: state.authState.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    orderHandler: () => dispatch(action.fetchOrders()),
+    orderHandler: (token, userId) =>
+      dispatch(action.fetchOrders(token, userId)),
   };
 };
 
