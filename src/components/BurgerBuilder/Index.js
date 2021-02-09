@@ -1,6 +1,6 @@
 import React, { Component, lazy, Suspense } from "react";
 import Burger from "../Burger/Burger";
-// import BuildControl from "../../components/Burger/BuildControl";
+import BuildControl from "../../components/Burger/BuildControl";
 import Modal from "../UI/Modal/Modal";
 import OrderSummary from "../Burger/OrderSummary";
 import axios from "../../axios-orders";
@@ -11,9 +11,9 @@ import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions/burgerBuilderAction";
 import * as actionAuth from "../../store/actions/authAction";
 
-const BuildControl = lazy(() => import("../../components/Burger/BuildControl"));
+// const BuildControl = lazy(() => import("../../components/Burger/BuildControl"));
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
   // constructor(props) {
   //   super(props);
 
