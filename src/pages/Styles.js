@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 import { ContactContainer } from "../components/Order/Contact/Styles";
 
-export const AuthFormContainer = styled(ContactContainer)``;
+export const AuthFormContainer = styled(ContactContainer)`
+  width: 80%;
+`;
 
 export const Form = styled.form``;
 

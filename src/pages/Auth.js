@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import * as actionType from "../store/actions/authAction";
 import Spinner from "../components/UI/Spinner/Spinner";
 import { Redirect } from "react-router-dom";
+import { objectAssign } from "../utilities/objectAssign";
 
 class Auth extends Component {
   state = {
@@ -64,18 +65,29 @@ class Auth extends Component {
   };
 
   inputChangedHandler = (event, inputName) => {
-    const updatedAuthForm = {
-      ...this.state.authForm,
-      [inputName]: {
-        ...this.state.authForm[inputName],
+    // const updatedAuthForm = {
+    //   ...this.state.authForm,
+    //   [inputName]: {
+    //     ...this.state.authForm[inputName],
+    //     value: event.target.value,
+    //     valid: this.checkValidity(
+    //       event.target.value,
+    //       this.state.authForm[inputName].validation
+    //     ),
+    //     touched: true,
+    //   },
+    // };
+
+    const updatedAuthForm = objectAssign(this.state.authForm, {
+      [inputName]: objectAssign(this.state.authForm[inputName], {
         value: event.target.value,
         valid: this.checkValidity(
           event.target.value,
           this.state.authForm[inputName].validation
         ),
         touched: true,
-      },
-    };
+      }),
+    });
     this.setState({ authForm: updatedAuthForm });
   };
 
@@ -96,7 +108,6 @@ class Auth extends Component {
   };
 
   componentDidMount() {
-    console.log("render");
     if (!this.props.building && this.props.authRedirectPath !== "/") {
       this.props.onSetAuthRedirectPath();
     }

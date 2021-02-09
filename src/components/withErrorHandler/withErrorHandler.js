@@ -13,7 +13,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
           return req;
         },
         (err) => {
-          console.log(err);
           this.setState({ error: null });
         }
       );
@@ -24,7 +23,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
         },
         (err) => {
           this.setState({ error: err.message });
-          console.log(err);
         }
       );
     }

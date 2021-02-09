@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import IndexPage from "./pages/Index";
 import { GlobalStyle } from "./utils/styles";
 import { ThemeProvider } from "styled-components";
@@ -8,11 +8,14 @@ import Layout from "./components/layout/index";
 import { Switch, Route, Redirect } from "react-router-dom";
 import asynComponent from "./components/Hoc/asyncComponent";
 import IngredientProvider from "./provider/IngredientProvider";
-import Orders from "./components/Orders/Orders";
-import Auth from "./pages/Auth";
+// import Orders from "./components/Orders/Orders";
+// import Auth from "./pages/Auth";
 import Logout from "./components/Logout/logout";
 import { connect } from "react-redux";
 import * as action from "./store/actions/authAction";
+
+const Auth = lazy(() => import("./pages/Auth"));
+const Orders = lazy(() => import("./components/Orders/Orders"));
 
 //same as Lazy Loading.
 const AsyncNewPost = asynComponent(() => {
@@ -26,10 +29,10 @@ const App = (props) => {
 
   let routes = (
     <Switch>
-      <Route path="/auth" component={Auth} />
-      <Route path="/" exact>
-        {IndexPage}
-      </Route>
+      <Route path="/" exact component={IndexPage} />
+      <Suspense fallback={<div>loading...</div>}>
+        <Route path="/auth" component={Auth} />
+      </Suspense>
       <Redirect to="/" />
     </Switch>
   );
@@ -37,15 +40,13 @@ const App = (props) => {
   if (props.isAuthenticated) {
     routes = (
       <Switch>
-        <Route path="/auth" component={Auth} />
-        <Route path="/" exact>
-          {IndexPage}
-        </Route>
-        <Route path="/checkout" component={AsyncNewPost} />
-        {props.isAuthenticated ? (
+        <Route path="/" exact component={IndexPage} />
+        <Suspense fallback={<div>loading</div>}>
+          <Route path="/checkout" component={AsyncNewPost} />
           <Route path="/orders" component={Orders} />
-        ) : null}
-        <Route path="/logout" component={Logout} />
+          <Route path="/auth" component={Auth} />
+          <Route path="/logout" component={Logout} />
+        </Suspense>
         <Redirect to="/" />
       </Switch>
     );

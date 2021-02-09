@@ -17,7 +17,10 @@ const SideDrawer = (props) => {
           </Suspense>
         </MobileLogoContainer>
         <nav>
-          <NavigationItems isAuthenticated={props.isAuth} />
+          <NavigationItems
+            isAuthenticated={props.isAuth}
+            closed={props.closed}
+          />
         </nav>
       </SideDrawerContainer>
     </>

@@ -12,7 +12,7 @@ export const ModalContainer = styled.div`
   top: 30%;
   transform: ${(props) =>
     props.show ? "translateY(0)" : "translateY(-100vh)"};
-  opacity: ${(props) => (props.show ? "opacity: 1" : "opacity: 0")};
+  opacity: ${(props) => (props.show ? "1" : "0")};
   transition: ${(props) => (props.show ? "all 0.3s ease-out" : "")};
   @media (min-width: 600px) {
     width: 500px;

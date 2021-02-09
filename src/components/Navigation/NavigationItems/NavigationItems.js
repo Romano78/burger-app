@@ -4,7 +4,7 @@ import { NavigationListUl, NavigationListLi, NavigationLink } from "./Styles";
 const NavigationItems = (props) => {
   return (
     <NavigationListUl>
-      <NavigationListLi>
+      <NavigationListLi onClick={props.closed}>
         <NavigationLink to="/" exact>
           Burger Builder
         </NavigationLink>

@@ -8,6 +8,7 @@ import OrderFormHelper from "../../Helper/OrderFormHelper";
 import { connect } from "react-redux";
 import withErrorHandler from "../../withErrorHandler/withErrorHandler";
 import * as orderAction from "../../../store/actions/orderAction";
+import { objectAssign } from "../../../utilities/objectAssign";
 
 class ContactData extends Component {
   state = {
@@ -139,23 +140,39 @@ class ContactData extends Component {
   };
 
   inputChangedHandler = (e, inputIdentifier) => {
-    const updatedOrderForm = {
-      ...this.state.orderForm,
-    };
+    // const updatedOrderForm = {
+    //   ...this.state.orderForm,
+    // };
 
-    const updatedFormElement = {
-      ...updatedOrderForm[inputIdentifier],
-    };
+    // const updatedFormElement = {
+    //   ...updatedOrderForm[inputIdentifier],
+    // };
 
-    updatedFormElement.value = e.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
+    const updatedFormElement = objectAssign(
+      this.state.orderForm[inputIdentifier],
+      {
+        value: e.target.value,
+        valid: this.checkValidity(
+          e.target.value,
+          this.state.orderForm[inputIdentifier].validation
+        ),
+        touched: true,
+      }
     );
 
-    updatedFormElement.touched = true;
+    const updatedOrderForm = objectAssign(this.state.orderForm, {
+      [inputIdentifier]: updatedFormElement,
+    });
 
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
+    // updatedFormElement.value = e.target.value;
+    // updatedFormElement.valid = this.checkValidity(
+    //   updatedFormElement.value,
+    //   updatedFormElement.validation
+    // );
+
+    // updatedFormElement.touched = true;
+
+    // updatedOrderForm[inputIdentifier] = updatedFormElement;
 
     let formIsNotValid = true;
 
